@@ -39,12 +39,17 @@ export class AppComponent implements OnInit {
     for (let entry of this.customers) {
       points.push({
         y : 5, 
-        label: "dnnsjkfsdafsd"
+        label: entry.accountidname
       })
   }
      this.chart = new CanvasJS.Chart("chartContainer", {
       animationEnabled: true,
       exportEnabled: true,
+  
+      axisX:{
+        labelFontSize:15,
+        labelAngle: 75
+      }, 
       title: {
         text: "Basic Column Chart in Angular"
       },

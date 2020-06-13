@@ -1,7 +1,33 @@
+
 <head>
   <script type="text/javascript" src="canvasjs.min.js"></script>
 </head>
 <body>
-  <div id="chartContainer" style="height: 500px; width: 1000px;"></div>
-  <button (click)="clickMe()">fasdfsa</button>
+<div class="page">
+<div class="navBar">
+    <div class="site-nav">
+        <ul class="group">
+          <li><a href="#">Home</a></li>
+          <li class="dropdown"><a href="#">Graphs</a>
+            <div class="dropdown-content">
+              <a href="#">Link 1</a>
+              <a href="#">Link 2</a>
+              <a href="#">Link 3</a>
+            </div></li>
+            <li><a href="#">Statistics</a></li>
+        </ul>
+    </div>
+    <div class="clr"></div>
+  </div>
+
+ <div class="graph">
+    <div id="chartContainer" style="width: 80%;"></div>
+    
+  </div>
+  <div>
+    <div> <button (click)="clickMe()">fasdfsa</button></div>
+  </div>
+</div>
 </body>
+
+
