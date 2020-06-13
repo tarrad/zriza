@@ -11,6 +11,7 @@ export class AppComponent implements OnInit {
   chart : any;
   constructor(private http: HttpClient) { }
   customers : any[] = [];
+  loading : boolean = false;
   ngOnInit(): void {
 
   }
@@ -77,68 +78,71 @@ export class AppComponent implements OnInit {
 
   clickMePercent()
   {
-    this.getTasks().subscribe(
+    this.loading = true;
+    console.log(this.loading);
+    setTimeout(() =>{this.getTasks().subscribe(
+    res => {
+      this.customers = res.data.Records;
+      console.log(this.customers);
+      let totalTasksOfProject = new Map();
+      let finishedTasksOfProject = new Map();
+
+    for (let entry of this.customers) {
+
+      if(totalTasksOfProject.has(entry.objecttitle) != false)
+      {
+        totalTasksOfProject.set(entry.objecttitle, totalTasksOfProject.get(entry.objecttitle) + 1);
+      }
+      else{
+        totalTasksOfProject.set(entry.objecttitle,0);
+      }
+
+      if(finishedTasksOfProject.has(entry.objecttitle) != false)
+      {
+        if(entry.statuscode == 10)
+        {
+          finishedTasksOfProject.set(entry.objecttitle, finishedTasksOfProject.get(entry.objecttitle) + 1);
+        }
+      }
+      else{
+        finishedTasksOfProject.set(entry.objecttitle,0);
+      }
+    }
+
+    this.getProjects().subscribe(
       res => {
         this.customers = res.data.Records;
         console.log(this.customers);
-        let totalTasksOfProject = new Map();
-        let finishedTasksOfProject = new Map();
+        var points = [];
 
-      for (let entry of this.customers) {
+    for (let entry of this.customers) {
+      let numOfTotalTasks = totalTasksOfProject.get(entry.projectname);
+      let numOfFinishedTasks = finishedTasksOfProject.get(entry.projectname);
+      let percent = numOfFinishedTasks/numOfTotalTasks * 100;
 
-        if(totalTasksOfProject.has(entry.objecttitle) != false)
-        {
-          totalTasksOfProject.set(entry.objecttitle, totalTasksOfProject.get(entry.objecttitle) + 1);
+      points.push({
+        y : percent,
+        label: entry.projectname
+      })
+    }
+      this.chart = new CanvasJS.Chart("chartContainer", {
+        animationEnabled: true,
+        exportEnabled: true,
+        title: {
+          text: "Project tasks progress"
+        },
+        data: [{
+          type: "column",
+
+          dataPoints: points,
+        }]
+      });
+
+      this.chart.render();
         }
-        else{
-          totalTasksOfProject.set(entry.objecttitle,0);
-        }
-
-        if(finishedTasksOfProject.has(entry.objecttitle) != false)
-        {
-          if(entry.statuscode == 10)
-          {
-            finishedTasksOfProject.set(entry.objecttitle, finishedTasksOfProject.get(entry.objecttitle) + 1);
-          }
-        }
-        else{
-          finishedTasksOfProject.set(entry.objecttitle,0);
-        }
-      }
-
-      this.getProjects().subscribe(
-        res => {
-          this.customers = res.data.Records;
-          console.log(this.customers);
-          var points = [];
-
-      for (let entry of this.customers) {
-        let numOfTotalTasks = totalTasksOfProject.get(entry.projectname);
-        let numOfFinishedTasks = finishedTasksOfProject.get(entry.projectname);
-        let percent = numOfFinishedTasks/numOfTotalTasks * 100;
-
-        points.push({
-          y : percent,
-          label: entry.projectname
-        })
-      }
-        this.chart = new CanvasJS.Chart("chartContainer", {
-          animationEnabled: true,
-          exportEnabled: true,
-          title: {
-            text: "Project tasks progress"
-          },
-          data: [{
-            type: "column",
-
-            dataPoints: points,
-          }]
-        });
-
-        this.chart.render();
-          }
-        );
-    });
+      );
+  });},3500);
+  this.loading = false;
   }
 
   clickMeProfitPerClient()
