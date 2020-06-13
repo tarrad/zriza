@@ -1,0 +1,7 @@
+{
+    "/api/*": {
+        "target": "https://api.powerlink.co.il/",
+        "secure": false
+    }
+  }
+  
