@@ -5,16 +5,19 @@
 <body>
   
 <div class="page">
-  <div *ngIf="loading" class="loading" ></div>
+  <div *ngIf="this.loading" class="loading"></div>
 <div class="navBar">
     <div class="site-nav">
         <ul class="group">
-          <li class="dropdown"><a href="#">Graphs</a>
+          <li style="background: url(../assets/Hamburger_icon.svg)  no-repeat  100%;" class="dropdown small"><a></a>
             <div class="dropdown-content">
               <a (click)= "clickMePercent()">Project's tasks progress</a>
               <a (click)= "clickMeProfitPerProject()">Profit/Loss per project</a>
               <a (click)= "clickMeProfitPerClient()">Profit/Loss per client</a>
             </div></li>
+            <li class="dropdown big"><a (click)= "clickMePercent()">Project's tasks progress</a></li>
+            <li class="dropdown big"> <a (click)= "clickMeProfitPerProject()">Profit/Loss per project</a></li>
+            <li class="dropdown big"><a (click)= "clickMeProfitPerClient()">Profit/Loss per client</a></li>
         </ul>
     </div>
     <div class="clr"></div>

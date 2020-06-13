@@ -79,8 +79,10 @@ export class AppComponent implements OnInit {
   clickMePercent()
   {
     this.loading = true;
+    setTimeout(() =>{console.log(this.loading)},3500);
+   
     console.log(this.loading);
-    setTimeout(() =>{this.getTasks().subscribe(
+   this.getTasks().subscribe(
     res => {
       this.customers = res.data.Records;
       console.log(this.customers);
@@ -141,7 +143,7 @@ export class AppComponent implements OnInit {
       this.chart.render();
         }
       );
-  });},3500);
+  });
   this.loading = false;
   }
 
